@@ -4,15 +4,15 @@ from django.contrib.auth.decorators import login_required
 # from django.db.models import Avg, Count, Max, Min, Sum
 # Post.objects.aggregate(Max("id"))
 
-from .models import Item
+from .models import Item, Archive
 from .forms import ItemCreateForm, ItemSellForm
 
 
 @login_required
 def index(request):
-    items = Item.objects.filter(sold=False).filter(owner=request.user)
+    items = Item.objects.filter(owner=request.user)
     # for item in items:
-    #     print(item.purchase_price)
+    #     print(item.purchase_unit_price)
     context = {
         'items': items,
     }
@@ -21,9 +21,9 @@ def index(request):
 
 @login_required
 def archive(request):
-    items = Item.objects.filter(sold=True).filter(owner=request.user)
+    sold_items = Archive.objects.filter(seller=request.user)
     context = {
-        'items': items,
+        'sold_items': sold_items,
     }
     return render(request, 'archive.html', context)
 
@@ -65,7 +65,7 @@ def item_edit(request, item_id):
 
 @login_required
 def item_delete(request, item_id):
-    item = Item.objects.get(id=item_id)
+    item = get_object_or_404(Item, id=item_id)
     if item.owner != request.user:
         return redirect('items:index')
     item.delete()
@@ -74,18 +74,16 @@ def item_delete(request, item_id):
 
 @login_required
 def item_sell(request, item_id):
-    item = get_object_or_404(Item, id=item_id)
-    if item.owner != request.user:
-        return redirect('items:index')
-    item.sold = True
+    # item = get_object_or_404(Item, id=item_id)
     form = ItemSellForm(
         request.POST or None,
-        instance=item,
         initial={'sell_date': lambda: datetime.now(),
                  'sell_price': None}
     )
     if form.is_valid():
-        form.save()
+        sold_item = form.save(commit=False)
+        sold_item.seller, sold_item.item_id = request.user, item_id
+        sold_item.save()
         return redirect('items:index')
     context = {
         'form': form,

@@ -1,0 +1,39 @@
+{% load thumbnail %}
+
+<article>
+  <ul>
+    <li>
+      Позиция: {{ sold_item.id }}
+    </li>
+    <li>
+      Продавец:
+      {% if sold_item.seller.first_name %}
+      {{ sold_item.seller.first_name }}
+      {% else %}
+      {{ sold_item.seller.username }}
+      {% endif %}
+    </li>
+    <li>
+      Цена продажи: {{ sold_item.sell_unit_price }}
+    </li>
+    <li>
+      Количество: {{ sold_item.count }}
+    </li>
+  </ul>
+  {% thumbnail post.image "1024x768" upscale=True as im %}
+  {% if post.image|is_portrait %}
+  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
+  {% else %}
+  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
+  {% endif %}
+  {% endthumbnail %}
+  <br>
+  {% if user == sold_item.seller %}
+  <p>
+    <a class="btn btn-primary" href="{% url 'items:index' %}">Редактировать запись</a>
+  </p>
+  <p>
+    <a class="btn btn-primary" href="{% url 'items:index' %}">Продано</a>
+  </p>
+  {% endif %}
+</article>

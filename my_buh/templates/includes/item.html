@@ -7,10 +7,17 @@
     </li>
     <li>
       Закупщик:
-      {% if item.owner.first_name %}{{ item.owner.first_name }}{% else %}{{ item.owner.username }}{% endif %}
+      {% if item.owner.first_name %}
+      {{ item.owner.first_name }}
+      {% else %}
+      {{ item.owner.username }}
+      {% endif %}
     </li>
     <li>
-      Цена закупки: {{ item.purchase_price }}
+      Цена закупки: {{ item.purchase_unit_price }}
+    </li>
+    <li>
+      Количество: {{ item.purchase_count }}
     </li>
   </ul>
   {% thumbnail post.image "1024x768" upscale=True as im %}

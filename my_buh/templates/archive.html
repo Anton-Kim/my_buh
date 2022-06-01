@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container py-5">
   <h1>Архив</h1><br>
-  {% for item in items %}
-  {% include 'includes/item.html' %}
+  {% for sold_item in sold_items %}
+  {% include 'includes/sold_item.html' %}
   {% if not forloop.last %}<hr>{% endif %}
   {% endfor %}
 </div>

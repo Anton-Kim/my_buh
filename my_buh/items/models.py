@@ -15,20 +15,21 @@ class Item(models.Model):
         verbose_name='Дата добавления',
         auto_now_add=True
     )
-    purchase_price = models.PositiveIntegerField(
-        verbose_name='Закупочная цена за единицу/штуку',
-        help_text='Укажите закупочную цену за единицу/штуку'
+    purchase_unit_price = models.PositiveIntegerField(
+        verbose_name='Закупочная цена за 1 шт.',
+        help_text='Укажите закупочную цену за 1 шт.'
     )
-    sell_price = models.PositiveIntegerField(
+    purchase_count = models.PositiveIntegerField(
+        verbose_name='Купленное количество',
+        help_text='Укажите купленное количество'
+    )
+    sold_count = models.PositiveIntegerField(
         default=0,
-        verbose_name='Цена продажи',
-        help_text='Укажите цену продажи'
+        verbose_name='Проданное количество'
     )
-    sell_date = models.DateField(
-        blank=True,
-        null=True,
-        verbose_name='Дата продажи',
-        help_text='Укажите дату продажи'
+    earnings = models.IntegerField(
+        default=0,
+        verbose_name='Выручка'
     )
     owner = models.ForeignKey(
         User,
@@ -36,23 +37,16 @@ class Item(models.Model):
         related_name='purchased_items',
         verbose_name='Закупщик'
     )
-    comment = models.TextField(
-        max_length=10000,
-        blank=True,
-        null=True,
-        verbose_name='Комментарий',
-        help_text='Введите комментарий'
-    )
     image = models.ImageField(
         verbose_name='Изображение',
         upload_to='',
         blank=True,
         help_text='Изображение позиции'
     )
-    sold = models.BooleanField(
-        verbose_name='Отметка о продаже',
-        default=False
-    )
+    # sold = models.BooleanField(
+    #     verbose_name='Отметка о продаже',
+    #     default=False
+    # )
 
     class Meta:
         ordering = ('-add_date', 'name')
@@ -61,3 +55,43 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Archive(models.Model):
+    item_id = models.IntegerField(
+        default=0,
+        verbose_name='ID продаваемой позиции'
+    )
+    sell_date = models.DateField(
+        verbose_name='Дата продажи',
+        help_text='Укажите дату продажи'
+    )
+    sell_unit_price = models.PositiveIntegerField(
+        verbose_name='Цена продажи за 1 шт.',
+        help_text='Укажите цену продажи за 1 шт.'
+    )
+    count = models.PositiveIntegerField(
+        verbose_name='Проданное количество',
+        help_text='Укажите проданное количество'
+    )
+    seller = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sold_items',
+        verbose_name='Продавец'
+    )
+    comment = models.TextField(
+        max_length=10000,
+        blank=True,
+        null=True,
+        verbose_name='Комментарий',
+        help_text='Необязательный комментарий'
+    )
+
+    class Meta:
+        ordering = ('-sell_date', 'item_id')
+        verbose_name = "Проданная позиция"
+        verbose_name_plural = "Проданные позиции"
+
+    def __str__(self):
+        return self.item.name
