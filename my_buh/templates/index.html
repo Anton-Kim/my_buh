@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Остаток{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>Остаток</h1><br>
+  {% for item in items %}
+  {% include 'includes/item.html' %}
+  {% if not forloop.last %}<hr>{% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load user_filters %}
+
+{% block title %}
+{% if is_edit %}
+Редактировать позицию
+{% elif is_sell %}
+Позиция продана
+{% else %}
+Добавить позицию
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+      <div class="card">
+        <div class="card-header">
+          {% if is_edit %}
+          Редактировать позицию
+          {% elif is_sell %}
+          Позиция продана
+          {% else %}
+          Добавить позицию
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {% for field in form %}
+            <div class="form-group row my-3 p-3">
+              <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}
+                <span class="required text-danger">*</span>
+                {% endif %}
+              </label>
+              {{ field|addclass:"form-control" }}
+              {% if field.help_text %}
+              <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
+                {{ field.help_text }}
+              </small>
+              {% endif %}
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">
+                {% if is_edit %}
+                Сохранить
+                {% elif is_sell %}
+                Завершить
+                {% else %}
+                Добавить
+                {% endif %}
+              </button>
+              {% if is_edit %}
+              <p>
+                <a class="btn btn-danger" href="{% url 'items:item_delete' item_id %}"
+                   onclick="return confirm('Безвозвратно удалить позицию?')">Удалить позицию</a>
+              </p>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

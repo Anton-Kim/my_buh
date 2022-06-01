@@ -1,0 +1,32 @@
+{% load thumbnail %}
+
+<article>
+  <ul>
+    <li>
+      Позиция: {{ item.name }}
+    </li>
+    <li>
+      Закупщик:
+      {% if item.owner.first_name %}{{ item.owner.first_name }}{% else %}{{ item.owner.username }}{% endif %}
+    </li>
+    <li>
+      Цена закупки: {{ item.purchase_price }}
+    </li>
+  </ul>
+  {% thumbnail post.image "1024x768" upscale=True as im %}
+  {% if post.image|is_portrait %}
+  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
+  {% else %}
+  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
+  {% endif %}
+  {% endthumbnail %}
+  <br>
+  {% if user == item.owner %}
+  <p>
+    <a class="btn btn-primary" href="{% url 'items:item_edit' item.id %}">Редактировать запись</a>
+  </p>
+  <p>
+    <a class="btn btn-primary" href="{% url 'items:item_sell' item.id %}">Продано</a>
+  </p>
+  {% endif %}
+</article>
