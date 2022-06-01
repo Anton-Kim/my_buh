@@ -58,9 +58,11 @@ class Item(models.Model):
 
 
 class Archive(models.Model):
-    item_id = models.IntegerField(
-        default=0,
-        verbose_name='ID продаваемой позиции'
+    item = models.ForeignKey(
+        Item,
+        on_delete=models.CASCADE,
+        related_name='sold_items',
+        verbose_name='Проданные позиции'
     )
     sell_date = models.DateField(
         verbose_name='Дата продажи',

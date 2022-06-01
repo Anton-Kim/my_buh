@@ -13,10 +13,10 @@ class ItemAdmin(admin.ModelAdmin):
 
 
 class ArchiveAdmin(admin.ModelAdmin):
-    list_display = ('item_id', 'sell_date', 'sell_unit_price', 'count',
+    list_display = ('item', 'sell_date', 'sell_unit_price', 'count',
                     'seller', 'comment')
-    search_fields = ('item_id',)
-    list_filter = ('item_id', 'sell_date', 'seller')
+    search_fields = ('item',)
+    list_filter = ('item', 'sell_date', 'seller')
     empty_value_display = '-пусто-'
 
 

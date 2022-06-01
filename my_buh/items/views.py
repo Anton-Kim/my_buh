@@ -22,6 +22,7 @@ def index(request):
 @login_required
 def archive(request):
     sold_items = Archive.objects.filter(seller=request.user)
+    print(sold_items)
     context = {
         'sold_items': sold_items,
     }
@@ -74,7 +75,7 @@ def item_delete(request, item_id):
 
 @login_required
 def item_sell(request, item_id):
-    # item = get_object_or_404(Item, id=item_id)
+    item = get_object_or_404(Item, id=item_id)
     form = ItemSellForm(
         request.POST or None,
         initial={'sell_date': lambda: datetime.now(),
@@ -82,8 +83,15 @@ def item_sell(request, item_id):
     )
     if form.is_valid():
         sold_item = form.save(commit=False)
-        sold_item.seller, sold_item.item_id = request.user, item_id
+        sold_item.seller = request.user
+        sold_item.item = item
         sold_item.save()
+        sold_count = form.cleaned_data['count']
+        item.purchase_count -= sold_count
+        item.sold_count += sold_count
+        item.earnings += form.cleaned_data['sell_unit_price'] * sold_count
+        item.save()
+
         return redirect('items:index')
     context = {
         'form': form,
