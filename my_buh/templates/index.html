@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load user_filters %}
+
 {% block title %}Остаток{% endblock %}
 
 {% block content %}
@@ -11,34 +13,38 @@
   <hr>
   {% endif %}
   {% endfor %}
-</div>
-{% endblock %}
-{% if user.is_authenticated %}
-<div class="card my-4">
-  <h5 class="card-header">Добавить комментарий:</h5>
-  <div class="card-body">
-    <form method="post" action="{% url 'items:add_comment' %}">
-      {% csrf_token %}
-      <div class="form-group mb-2">
-        {{ form.text|addclass:"form-control" }}
-      </div>
-      <button type="submit" class="btn btn-primary">Отправить</button>
-    </form>
+  {% if user.is_authenticated %}
+  <div class="card my-4">
+    <h5 class="card-header">Оставить отзыв:</h5>
+    <div class="card-body">
+      <form method="post" action="{% url 'items:add_comment' %}">
+        {% csrf_token %}
+        <div class="form-group mb-2">
+          {{ form.text|addclass:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </form>
+    </div>
   </div>
-</div>
-{% endif %}
-{% for comment in comments %}
-<div class="media mb-4">
-  <div class="media-body">
-    <h5 class="mt-0">
-      {{ comment.author.username }}
-    </h5>
-    <p>
-      {{ comment.created }}
-    </p>
-    <p>
-      {{ comment.text }}
-    </p>
+  {% endif %}
+  {% for comment in comments %}
+  <div class="media mb-4">
+    <div class="media-body">
+      <h5 class="mt-0">
+        {% if comment.author.first_name %}
+        {{ comment.author.first_name }}
+        {% else %}
+        {{ comment.author.username }}
+        {% endif %}
+      </h5>
+      <p>
+        {{ comment.created }}
+      </p>
+      <p>
+        {{ comment.text }}
+      </p>
+    </div>
   </div>
 </div>
 {% endfor %}
+{% endblock %}

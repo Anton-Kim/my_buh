@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Item, Archive
+from .models import Item, Archive, Comment
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -19,5 +19,13 @@ class ArchiveAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('text', 'created', 'author')
+    search_fields = ('text',)
+    list_filter = ('created', 'author')
+    empty_value_display = '-пусто-'
+
+
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Archive, ArchiveAdmin)
+admin.site.register(Comment, CommentAdmin)

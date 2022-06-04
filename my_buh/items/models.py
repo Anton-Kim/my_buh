@@ -92,8 +92,8 @@ class Archive(models.Model):
 
     class Meta:
         ordering = ('-sell_date', 'item_id')
-        verbose_name = "Проданная позиция"
-        verbose_name_plural = "Проданные позиции"
+        verbose_name = "История продаж"
+        verbose_name_plural = "История продаж"
 
     def __str__(self):
         return self.item.name
