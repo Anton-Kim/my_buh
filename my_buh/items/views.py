@@ -1,7 +1,7 @@
 from datetime import datetime
-from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from sorl.thumbnail import delete
 # from django.db.models import Avg, Count, Max, Min, Sum
 # Post.objects.aggregate(Max("id"))
 
@@ -51,6 +51,7 @@ def item_create(request):
 @login_required
 def item_edit(request, item_id):
     item = get_object_or_404(Item, id=item_id)
+    pic = item.image
     if item.buyer != request.user:
         return redirect('items:index')
     form = ItemCreateForm(
@@ -64,6 +65,14 @@ def item_edit(request, item_id):
     # form.fields['count'].widget = forms.HiddenInput()
     # Поле становится невидимым, но виды verbose и help texts
     if form.is_valid():
+        if pic:
+            if form.cleaned_data['image'] and form.cleaned_data['image'] != pic:
+                delete(pic)
+            elif not form.cleaned_data['image']:
+                delete(pic)
+        print(form.cleaned_data)
+        print(form.cleaned_data['image'])
+        print(item.image)
         form.save()
         return redirect('items:index')
     context = {
@@ -79,6 +88,8 @@ def item_delete(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     if item.buyer != request.user:
         return redirect('items:index')
+    if item.image:
+        delete(item.image)
     item.delete()
     return redirect('items:index')
 

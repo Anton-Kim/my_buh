@@ -43,10 +43,6 @@ class Item(models.Model):
         blank=True,
         help_text='Изображение позиции'
     )
-    # sold = models.BooleanField(
-    #     verbose_name='Отметка о продаже',
-    #     default=False
-    # )
 
     class Meta:
         ordering = ('-add_date', 'name')

@@ -20,12 +20,8 @@
       Количество: {{ item.count }}
     </li>
   </ul>
-  {% thumbnail post.image "1024x768" upscale=True as im %}
-  {% if post.image|is_portrait %}
-  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
-  {% else %}
-  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
-  {% endif %}
+  {% thumbnail item.image "100x100" crop="center" as im %}
+  <img src="{{ im.url }}" class="rounded mx-auto d-block">
   {% endthumbnail %}
   <br>
   <p>
