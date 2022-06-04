@@ -19,7 +19,7 @@ class Item(models.Model):
         verbose_name='Закупочная цена за 1 шт.',
         help_text='Укажите закупочную цену за 1 шт.'
     )
-    purchase_count = models.PositiveIntegerField(
+    count = models.PositiveIntegerField(
         verbose_name='Купленное количество',
         help_text='Укажите купленное количество'
     )
@@ -31,7 +31,7 @@ class Item(models.Model):
         default=0,
         verbose_name='Выручка'
     )
-    owner = models.ForeignKey(
+    buyer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='purchased_items',
@@ -97,3 +97,29 @@ class Archive(models.Model):
 
     def __str__(self):
         return self.item.name
+
+
+class Comment(models.Model):
+    text = models.TextField(
+        max_length=10000,
+        verbose_name='Текст комментария',
+        help_text='Введите текст комментария'
+    )
+    created = models.DateTimeField(
+        verbose_name='Дата создания',
+        auto_now_add=True
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
+    )
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return self.text[:15]

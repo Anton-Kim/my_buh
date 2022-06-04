@@ -19,6 +19,14 @@
     <li>
       Количество: {{ sold_item.count }}
     </li>
+    <li>
+      Дата: {{ sold_item.sell_date }}
+    </li>
+    {% if sold_item.comment %}
+    <li>
+      Комментарий: {{ sold_item.comment }}
+    </li>
+    {% endif %}
   </ul>
   {% thumbnail post.image "1024x768" upscale=True as im %}
   {% if post.image|is_portrait %}
@@ -28,12 +36,17 @@
   {% endif %}
   {% endthumbnail %}
   <br>
-  {% if user == sold_item.seller %}
   <p>
-    <a class="btn btn-primary" href="{% url 'items:index' %}">Редактировать запись</a>
+    <a class="btn btn-primary" href="{% url 'items:item_comment' sold_item.id %}">
+      {% if sold_item.comment %}
+      Изменить комментарий
+      {% else %}
+      Добавить комментарий
+      {% endif %}
+    </a>
   </p>
   <p>
-    <a class="btn btn-primary" href="{% url 'items:index' %}">Продано</a>
+    <a class="btn btn-danger" href="{% url 'items:item_revoke' sold_item.id %}"
+       onclick="return confirm('Отозвать продажу?')">Отозвать продажу</a>
   </p>
-  {% endif %}
 </article>

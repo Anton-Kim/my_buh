@@ -7,7 +7,38 @@
   <h1>Остаток</h1><br>
   {% for item in items %}
   {% include 'includes/item.html' %}
-  {% if not forloop.last %}<hr>{% endif %}
+  {% if not forloop.last %}
+  <hr>
+  {% endif %}
   {% endfor %}
 </div>
 {% endblock %}
+{% if user.is_authenticated %}
+<div class="card my-4">
+  <h5 class="card-header">Добавить комментарий:</h5>
+  <div class="card-body">
+    <form method="post" action="{% url 'items:add_comment' %}">
+      {% csrf_token %}
+      <div class="form-group mb-2">
+        {{ form.text|addclass:"form-control" }}
+      </div>
+      <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% for comment in comments %}
+<div class="media mb-4">
+  <div class="media-body">
+    <h5 class="mt-0">
+      {{ comment.author.username }}
+    </h5>
+    <p>
+      {{ comment.created }}
+    </p>
+    <p>
+      {{ comment.text }}
+    </p>
+  </div>
+</div>
+{% endfor %}
