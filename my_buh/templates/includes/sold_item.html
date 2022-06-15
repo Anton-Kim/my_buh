@@ -3,51 +3,47 @@
 <div class="card border-0 rounded shadow-lg">
   <div class="card-content">
     <div class="card-body cleartfix">
-      <div class="media align-items-stretch">
-        <div class="media-body">
-          <h5>{{ sold_item|truncatechars:30 }}</h5>
-          {{ sold_item.count }} шт. по {{ sold_item.sell_unit_price }} р. <span style="color:silver">
+      <div class="media-body">
+        <h5>{{ sold_item }}</h5>
+        Продано {{ sold_item.count }} шт. по {{ sold_item.sell_unit_price }} р. <span style="color:silver">
           {{ sold_item.sell_date }}</span>
+      </div>
+      <div class="align-self-center mr-3">
+        {% if sold_item.comment %}
+        <div class="border rounded p-2">
+          <div title="{{ sold_item.comment }}"><em>{{ sold_item.comment|truncatechars:100 }}</em></div>
         </div>
-        <div class="align-self-center mr-3">
-          <div class="border rounded p-2">
-            {% if sold_item.comment %}
-            <div title="{{ sold_item.comment }}"><em>{{ sold_item.comment|truncatechars:15 }}</em></div>
-            {% else %}
-            📄
-            {% endif %}
-          </div>
-        </div>
-        <div class="align-self-center ">
-          <a href="{% url 'items:item_comment' sold_item.id %}" class="text-secondary">
-            {% if sold_item.comment %}
-            <b>Изменить комментарий</b>
-            {% else %}
-            <b>Добавить комментарий</b>
-            {% endif %}
-          </a>
-        </div>
-        <div class="align-self-center p-3">
-          <a class="text-danger" href="{% url 'items:item_revoke' sold_item.id %}" data-toggle="modal"
-             data-target="#exampleModalCenter"><b>Отозвать продажу</b></a>
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-               aria-labelledby="exampleModalCenterTitle"
-               aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Подтвердите действие</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Отменить продажу и вернуть единицы в карточку товара?
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                  <a class="btn btn-danger" href="{% url 'items:item_revoke' sold_item.id %}">Отозвать продажу</a>
-                </div>
+        {% endif %}
+      </div>
+      <div class="align-self-center ">
+        <a href="{% url 'items:item_comment' sold_item.id %}" class="text-secondary">
+          {% if sold_item.comment %}
+          <b>Изменить комментарий</b>
+          {% else %}
+          <b>Добавить комментарий</b>
+          {% endif %}
+        </a>
+      </div>
+      <div class="align-self-center">
+        <a class="text-danger" href="{% url 'items:item_revoke' sold_item.id %}" data-toggle="modal"
+           data-target="#exampleModalCenter"><b>Отозвать продажу</b></a>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Подтвердите действие</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Отменить продажу и вернуть единицы в карточку товара?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                <a class="btn btn-danger" href="{% url 'items:item_revoke' sold_item.id %}">Отозвать продажу</a>
               </div>
             </div>
           </div>

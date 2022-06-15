@@ -2,8 +2,6 @@ from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from sorl.thumbnail import delete
-# from django.db.models import Avg, Count, Max, Min, Sum
-# Post.objects.aggregate(Max("id"))
 
 from .models import Item, Archive, Comment
 from .forms import ItemCreateForm, ItemSellForm, CommentForm
