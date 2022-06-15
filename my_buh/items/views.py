@@ -12,14 +12,20 @@ from .forms import ItemCreateForm, ItemSellForm, CommentForm
 @login_required
 def index(request):
     items = Item.objects.filter(buyer=request.user).filter()
-    # for item in items:
-    #     print(item.purchase_unit_price)
+    total_costs, total_earnings, total_profit = 0, 0, 0
+    for item in items:
+        total_costs += (item.count + item.sold_count) * item.purchase_unit_price
+        total_earnings += item.earnings
+        total_profit += item.earnings - item.purchase_unit_price * item.sold_count
     form = CommentForm()
     comments = Comment.objects.all()
     context = {
         'items': items,
         'form': form,
         'comments': comments,
+        'total_costs': format(total_costs, ',d').replace(',', ' '),
+        'total_earnings': format(total_earnings, ',d').replace(',', ' '),
+        'total_profit': format(total_profit, ',d').replace(',', ' '),
     }
     return render(request, 'index.html', context)
 
@@ -60,6 +66,7 @@ def item_edit(request, item_id):
         instance=item
     )
     form.fields['purchase_unit_price'].widget.attrs['readonly'] = True
+    form.fields['count'].widget.attrs['readonly'] = True
     # form.fields['purchase_unit_price'].widget.attrs['disabled'] = True
     # При такой настройке форма не сохраняется
     # form.fields['count'].widget = forms.HiddenInput()
@@ -156,7 +163,7 @@ def item_comment(request, item_id):
         return redirect('items:archive')
     context = {
         'form': form,
-        'is_edit': True,
+        'is_comment': True,
         'item_id': item_id,
     }
     return render(request, 'items/edit_item.html', context)

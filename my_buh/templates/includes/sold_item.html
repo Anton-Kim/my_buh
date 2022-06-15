@@ -1,52 +1,58 @@
 {% load thumbnail %}
 
-<article>
-  <ul>
-    <li>
-      Позиция: {{ sold_item }}
-    </li>
-    <li>
-      Продавец:
-      {% if sold_item.seller.first_name %}
-      {{ sold_item.seller.first_name }}
-      {% else %}
-      {{ sold_item.seller.username }}
-      {% endif %}
-    </li>
-    <li>
-      Цена продажи: {{ sold_item.sell_unit_price }}
-    </li>
-    <li>
-      Количество: {{ sold_item.count }}
-    </li>
-    <li>
-      Дата: {{ sold_item.sell_date }}
-    </li>
-    {% if sold_item.comment %}
-    <li>
-      Комментарий: {{ sold_item.comment }}
-    </li>
-    {% endif %}
-  </ul>
-  {% thumbnail post.image "1024x768" upscale=True as im %}
-  {% if post.image|is_portrait %}
-  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
-  {% else %}
-  <img src="{{ im.url }}" width="70%" class="rounded mx-auto d-block">
-  {% endif %}
-  {% endthumbnail %}
-  <br>
-  <p>
-    <a class="btn btn-primary" href="{% url 'items:item_comment' sold_item.id %}">
-      {% if sold_item.comment %}
-      Изменить комментарий
-      {% else %}
-      Добавить комментарий
-      {% endif %}
-    </a>
-  </p>
-  <p>
-    <a class="btn btn-danger" href="{% url 'items:item_revoke' sold_item.id %}"
-       onclick="return confirm('Отозвать продажу?')">Отозвать продажу</a>
-  </p>
-</article>
+<div class="card border-0 rounded shadow-lg">
+  <div class="card-content">
+    <div class="card-body cleartfix">
+      <div class="media align-items-stretch">
+        <div class="media-body">
+          <h5>{{ sold_item|truncatechars:30 }}</h5>
+          {{ sold_item.count }} шт. по {{ sold_item.sell_unit_price }} р. <span style="color:silver">
+          {{ sold_item.sell_date }}</span>
+        </div>
+        <div class="align-self-center mr-3">
+          <div class="border rounded p-2">
+            {% if sold_item.comment %}
+            <div title="{{ sold_item.comment }}"><em>{{ sold_item.comment|truncatechars:15 }}</em></div>
+            {% else %}
+            📄
+            {% endif %}
+          </div>
+        </div>
+        <div class="align-self-center ">
+          <a href="{% url 'items:item_comment' sold_item.id %}" class="text-secondary">
+            {% if sold_item.comment %}
+            <b>Изменить комментарий</b>
+            {% else %}
+            <b>Добавить комментарий</b>
+            {% endif %}
+          </a>
+        </div>
+        <div class="align-self-center p-3">
+          <a class="text-danger" href="{% url 'items:item_revoke' sold_item.id %}" data-toggle="modal"
+             data-target="#exampleModalCenter"><b>Отозвать продажу</b></a>
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+               aria-labelledby="exampleModalCenterTitle"
+               aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Подтвердите действие</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Отменить продажу и вернуть единицы в карточку товара?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                  <a class="btn btn-danger" href="{% url 'items:item_revoke' sold_item.id %}">Отозвать продажу</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,33 +1,46 @@
+{% load static %}
+
 {% load thumbnail %}
 
-<article>
-  <ul>
-    <li>
-      Позиция: {{ item.name }}
-    </li>
-    <li>
-      Закупщик:
-      {% if item.buyer.first_name %}
-      {{ item.buyer.first_name }}
+{% load user_filters %}
+
+<div class="col-12 col-md-4 col-xl-4">
+  <div class="card border-0 rounded shadow-lg">
+    {% if not item.image %}
+    <img src="{% static 'img/noimage.jpg' %}" class="card-img-top">
+    {% endif %}
+
+    {% if not item.count %}
+    {% thumbnail item.image "300x300" crop="center" colorspace='GRAY' as im %}
+    <img src="{{ im.url }}" class="card-img-top">
+    {% endthumbnail %}
+    {% else %}
+    {% thumbnail item.image "300x300" crop="center" as im %}
+    <img src="{{ im.url }}" class="card-img-top">
+    {% endthumbnail %}
+    {% endif %}
+
+    <div class="card-body">
+      {% if item.count %}
+      <h5 class="card-title">{{ item.name }}</h5>
       {% else %}
-      {{ item.buyer.username }}
+      <h5 class="card-title"><span style="color:silver">{{ item.name }} </span><span style="color:red">(продано)</span></h5>
       {% endif %}
-    </li>
-    <li>
-      Цена закупки: {{ item.purchase_unit_price }}
-    </li>
-    <li>
-      Количество: {{ item.count }}
-    </li>
-  </ul>
-  {% thumbnail item.image "100x100" crop="center" as im %}
-  <img src="{{ im.url }}" class="rounded mx-auto d-block">
-  {% endthumbnail %}
-  <br>
-  <p>
-    <a class="btn btn-primary" href="{% url 'items:item_edit' item.id %}">Редактировать запись</a>
-  </p>
-  <p>
-    <a class="btn btn-primary" href="{% url 'items:item_sell' item.id %}">Продано</a>
-  </p>
-</article>
+      <h6 class="text-muted mb-2">Выгода: {% multiple_args_tag item.earnings item.sold_count item.purchase_unit_price %}</h6>
+      <h6 class="text-muted mb-2">Остаток: {{ item.count }}/{{ item.count|add:item.sold_count }}</h6>
+      <div class="progress border rounded">
+        <div class="progress-bar bg-primary" style="width: {{ item.count|balance_percentage:item.sold_count }}%">
+          {{ item.count }}
+        </div>
+        <br>
+      </div>
+      <div class="d-flex flex-row mt-3">
+        <a href="{% url 'items:item_edit' item.id %}" class="btn btn-secondary flex-fill me-1" role="button">Детали</a>&nbsp;
+        {% if item.count %}
+        <a href="{% url 'items:item_sell' item.id %}" class="btn btn-success flex-fill ms-1" role="button">Продано</a>
+        {% else %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

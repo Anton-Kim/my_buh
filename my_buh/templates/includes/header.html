@@ -1,52 +1,49 @@
 {% load static %}
 
-<nav class="navbar navbar-light" style="background-color: lightskyblue">
+<nav class="navbar navbar-dark navbar-expand-md" style="background-color: #718696;">
   <div class="container">
     <a class="navbar-brand" href="{% url 'items:index' %}">
-      <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-      <span style="color:red">Моя</span> бухгалтерия</a>
+      <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top">
+      <b><span style="color:mediumaquamarine">&nbsp;Моя</span> бухгалтерия</b>
     </a>
-    <ul class="nav nav-pills">
-      {% with request.resolver_match.view_name as view_name %}
-      {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link {% if view_name  == 'items:item_create' %}
-        active
-      {% endif %}" href="{% url 'items:item_create' %}">Добавить позицию</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if view_name  == 'items:archive' %}
-        active
-      {% endif %}" href="{% url 'items:archive' %}">История продаж</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link link-light {% if view_name  == 'users:password_change' %}
-        active
-      {% endif %}" href="{% url 'users:password_change' %}">Изменить пароль</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link link-light {% if view_name  == 'users:logout' %}
-        active
-      {% endif %}" href="{% url 'users:logout' %}">Выйти</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link link-dark">
-          👤 {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}
-        </a>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link link-light {% if view_name  == 'users:login' %}
-        active
-      {% endif %}" href="{% url 'users:login' %}">Войти</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link link-light {% if view_name  == 'users:signup' %}
-        active
-      {% endif %}" href="{% url 'users:signup' %}">Регистрация</a>
-      </li>
-      {% endif %}
-      {% endwith %}
-    </ul>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        {% with request.resolver_match.view_name as view_name %}
+        {% if user.is_authenticated %}
+        <li class="nav-item {% if view_name  == 'items:item_create' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'items:item_create' %}">Добавить позицию <span
+                  class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item {% if view_name  == 'items:archive' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'items:archive' %}">История продаж</a>
+        </li>
+        <li class="nav-item {% if view_name  == 'users:password_change' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'users:password_change' %}">Изменить пароль</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users:logout' %}">Выйти</a>
+        </li>
+        <li class="nav-item">
+        <li class="nav-item active">
+          <a class="nav-link">
+            <span style="color:black;">
+              👤 {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}
+            </span></a>
+        </li>
+        {% else %}
+        <li class="nav-item {% if view_name  == 'users:login' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'users:login' %}">Войти</a>
+        </li>
+        <li class="nav-item {% if view_name  == 'users:signup' %}active{% endif %}">
+          <a class="nav-link" href="{% url 'users:signup' %}">Регистрация</a>
+        </li>
+        {% endif %}
+        {% endwith %}
+      </ul>
+    </div>
   </div>
 </nav>
