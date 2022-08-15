@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '@*0dklr8xu9uzvq_cc88e50w6!vdd%$$1!2*njat2yk^pp9_y3'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'www.mybuh.pythonanywhere.com',
@@ -87,7 +87,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -108,9 +108,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'mybuhreset@gmail.com'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+# EMAIL_HOST_USER = 'mybuhreset@gmail.com'
+# EMAIL_HOST_USER = 'mybuhrecover@mail.ru'
+EMAIL_HOST_USER = 'mybuh-recover@yandex.ru'
+EMAIL_HOST_PASSWORD = os.getenv('YMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'mybuh-recover@yandex.ru'
+SERVER_EMAIL = 'mybuh-recover@yandex.ru'

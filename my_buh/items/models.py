@@ -45,7 +45,6 @@ class Item(models.Model):
     )
 
     class Meta:
-        ordering = ('-count', '-add_date', 'name')
         verbose_name = "Позиция"
         verbose_name_plural = "Позиции"
 

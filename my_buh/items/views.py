@@ -9,7 +9,7 @@ from .forms import ItemCreateForm, ItemSellForm, CommentForm
 
 @login_required
 def index(request):
-    items = Item.objects.filter(buyer=request.user).filter()
+    items = Item.objects.filter(buyer=request.user).order_by('-count', '-add_date')
     total_costs, total_earnings, total_profit = 0, 0, 0
     for item in items:
         total_costs += (item.count + item.sold_count) * item.purchase_unit_price
@@ -31,7 +31,6 @@ def index(request):
 @login_required
 def archive(request):
     sold_items = Archive.objects.filter(seller=request.user)
-    print(sold_items)
     context = {
         'sold_items': sold_items,
     }
@@ -133,8 +132,11 @@ def item_sell(request, item_id):
 
 @login_required
 def item_revoke(request, item_id):
+    print(item_id)
     sold_item = get_object_or_404(Archive, id=item_id)
+    print(sold_item.item_id)
     item = get_object_or_404(Item, id=sold_item.item_id)
+    print(item.id)
     if sold_item.seller != request.user:
         return redirect('items:archive')
     item.count += sold_item.count

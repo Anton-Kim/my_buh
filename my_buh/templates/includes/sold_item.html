@@ -25,29 +25,8 @@
         </a>
       </div>
       <div class="align-self-center">
-        <a class="text-danger" href="{% url 'items:item_revoke' sold_item.id %}" data-toggle="modal"
-           data-target="#exampleModalCenter"><b>Отозвать продажу</b></a>
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalCenterTitle"
-             aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Подтвердите действие</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                Отменить продажу и вернуть единицы в карточку товара?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                <a class="btn btn-danger" href="{% url 'items:item_revoke' sold_item.id %}">Отозвать продажу</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <a class="text-danger" href="{% url 'items:item_revoke' sold_item.id %}"
+           onclick="return confirm('Отменить продажу и вернуть единицы в карточку товара?')"><b>Отозвать продажу</b></a>
       </div>
     </div>
   </div>
