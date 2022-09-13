@@ -1,7 +1,7 @@
-![](https://img.shields.io/badge/Python-3.7.0-blue) 
-![](https://img.shields.io/badge/Django-2.2.16-orange)
-![](https://img.shields.io/badge/HTML-5-red)
-![](https://img.shields.io/badge/SQLite-3-blue)
+![](https://img.shields.io/badge/Python-3.7.0-blue?style=flat&logo=python&logoColor=white) 
+![](https://img.shields.io/badge/Django-2.2.16-orange?style=flat&logo=django&logoColor=white)
+![](https://img.shields.io/badge/HTML-5-red?style=flat&logo=google&logoColor=white)
+![](https://img.shields.io/badge/SQLite-3-blu?style=flat&logo=sqlite&logoColor=whitee)
 <br>
 
 ### 📊 Моя бухгалтерия - сервис для ведения личной бухгалтерии по продажам вещей
